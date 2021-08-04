@@ -1,12 +1,12 @@
 const database = require('../util/db');
 
-const getProductById = (productId) => {
+const getLocationById = (locationId) => {
   return new Promise(function (resolve, reject) {
-    var query = "SELECT * FROM Product WHERE product_id = ?";
+    var query = "SELECT * FROM Location WHERE location_id = ?";
 
     database.query(
         query,
-        [productId],
+        [locationId],
         function (err, result, fields) {
             if(err) { 
                 reject(err);
@@ -20,13 +20,13 @@ const getProductById = (productId) => {
   });
 };
 
-const saveProduct = (productId, name, totalQuantity) => {
+const saveLocation = (locationId, name, address, city, country) => {
   return new Promise(function (resolve, reject) {
-    var query = "INSERT INTO Product (product_id, name, total_quantity, last_update) VALUES (?, ?, ?, NOW())";
+    var query = "INSERT INTO Location (location_id, name, address, city, country, last_update) VALUES (?, ?, ?, ?, ?, NOW())";
 
     database.query(
         query,
-        [productId, name, totalQuantity],
+        [locationId, name, address, city, country],
         function (err, result, fields) {
             if(err) { 
                 reject(err);
@@ -41,6 +41,6 @@ const saveProduct = (productId, name, totalQuantity) => {
 };
 
 module.exports = {
-  getProductById,
-  saveProduct
+  getLocationById,
+  saveLocation
 }

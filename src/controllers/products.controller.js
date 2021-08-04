@@ -1,17 +1,19 @@
 const uuid = require('uuid');
-const { saveProduct } = require("../models/products.models");
+const { getProductById, saveProduct } = require("../models/products.models");
 
-const productGetController = (request, response, next) => {
-  const {product_id} = request.params;
+const productGetController = async (request, response, next) => {
+  const { product_id: productId } = request.params;
 
-  response.status(200).json(product_id);
+  const result = await getProductById(productId);
+
+  response.status(200).json(result);
 };
 
 const productPostController = async (request, response, next) => {
-  const { name, total_quantity } = request.body;
+  const { name, total_quantity: totalQuantity } = request.body;
   const productId = uuid.v4();
 
-  const result = await saveProduct( productId, name, total_quantity ? total_quantity: 0);
+  const result = await saveProduct( productId, name, totalQuantity ? totalQuantity: 0);
 
   if( result.affectedRows ){
     response.status(200).json({product_id: productId});
