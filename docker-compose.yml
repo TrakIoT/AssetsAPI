@@ -1,25 +1,44 @@
 version: "3"
 services:
-  instastore-db:
-        build:
-          context: .
-          dockerfile: ./conf/docker/mysql.dockerfile
-        command: --default-authentication-plugin=mysql_native_password
-        environment:
-          - MYSQL_ROOT_PASSWORD=secret
-          - TZ=America/Bogota
-        volumes:
-          - mysql-source-data:/var/lib/mysql
-        ports: 
-          - "33060:3306"
-  instastore-node:
-      build:
-          context: .
-          dockerfile: ./conf/docker/node.dockerfile
-      ports:
-        - "3000:3000"
-      links:
-        - instastore-db
-
+  asset-db:
+    build:
+      context: .
+      dockerfile: ./conf/docker/mysql.dockerfile
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - TZ=America/Bogota
+    volumes:
+      - mysql-source-data:/var/lib/mysql
+    ports: 
+      - "33060:3306"
+    networks:
+      - asset-network
+  asset-node:
+    build:
+      context: .
+      dockerfile: node.dockerfile
+    image: nodejs
+    container_name: asset-node
+    restart: unless-stopped
+    env_file: .env
+    # environment:
+    #   - MONGO_USERNAME=$MONGO_USERNAME
+    #   - MONGO_PASSWORD=$MONGO_PASSWORD
+    #   - MONGO_HOSTNAME=db
+    #   - MONGO_PORT=$MONGO_PORT
+    #   - MONGO_DB=$MONGO_DB
+    ports:
+      - "3000:8080"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - asset-network
+    command: ./init.sh
+networks:
+  asset-network:
+    driver: bridge
 volumes:
   mysql-source-data:
+  node_modules:

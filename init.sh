@@ -7,7 +7,7 @@ echo "Checking DB connection ..."
 i=0
 until [ $i -ge 50 ]
 do
-    nc -z instastore-db 33060 && break
+    nc -z asset-db 33060 && break
     
     i=$(( i + 1 ))
     
