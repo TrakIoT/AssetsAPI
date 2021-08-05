@@ -24,7 +24,7 @@ USE `assets` ;
 DROP TABLE IF EXISTS `assets`.`Location` ;
 
 CREATE TABLE IF NOT EXISTS `assets`.`Location` (
-  `location_id` VARCHAR(50) NOT NULL,
+  `location_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `address` VARCHAR(45) NULL,
   `city` VARCHAR(45) NULL,
@@ -40,8 +40,8 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `assets`.`Stowage` ;
 
 CREATE TABLE IF NOT EXISTS `assets`.`Stowage` (
-  `stowage_id` VARCHAR(50) NOT NULL,
-  `location_id` VARCHAR(50) NOT NULL,
+  `stowage_id` INT NOT NULL AUTO_INCREMENT,
+  `location_id` INT NOT NULL,
   `last_update` DATETIME NULL,
   PRIMARY KEY (`stowage_id`, `location_id`),
   CONSTRAINT `fk_Stowage_Location`
@@ -60,7 +60,7 @@ CREATE INDEX `fk_Stowage_Location_idx` ON `assets`.`Stowage` (`location_id` ASC)
 DROP TABLE IF EXISTS `assets`.`Product` ;
 
 CREATE TABLE IF NOT EXISTS `assets`.`Product` (
-  `product_id` VARCHAR(50) NOT NULL,
+  `product_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `total_quantity` INT NULL,
   `last_update` DATETIME NULL,
@@ -74,10 +74,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `assets`.`Batch` ;
 
 CREATE TABLE IF NOT EXISTS `assets`.`Batch` (
-  `batch_id` VARCHAR(50) NOT NULL,
-  `product_id` VARCHAR(50) NOT NULL,
+  `batch_id` INT NOT NULL AUTO_INCREMENT,
+  `product_id` INT NOT NULL,
   `total_quantity` INT NULL,
-  `expiring_date` DATE NULL,
+  `expiring_date` DATETIME NULL,
   `last_update` DATETIME NULL,
   PRIMARY KEY (`batch_id`, `product_id`),
   CONSTRAINT `fk_Batch_Product1`
@@ -96,9 +96,10 @@ CREATE INDEX `fk_Batch_Product1_idx` ON `assets`.`Batch` (`product_id` ASC) VISI
 DROP TABLE IF EXISTS `assets`.`Register` ;
 
 CREATE TABLE IF NOT EXISTS `assets`.`Register` (
-  `register_id` VARCHAR(50) NOT NULL,
-  `stowage_id` VARCHAR(50) NOT NULL,
-  `batch_id` VARCHAR(50) NOT NULL,
+  `register_id` INT NOT NULL AUTO_INCREMENT,
+  `register_uuid` VARCHAR(50) NOT NULL,
+  `stowage_id` INT NOT NULL,
+  `batch_id` INT NOT NULL,
   `quantity` INT NULL,
   `last_update` DATETIME NULL,
   PRIMARY KEY (`register_id`, `stowage_id`, `batch_id`),

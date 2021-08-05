@@ -1,25 +1,36 @@
 version: "3"
 services:
-  instastore-db:
-        build:
-          context: .
-          dockerfile: ./conf/docker/mysql.dockerfile
-        command: --default-authentication-plugin=mysql_native_password
-        environment:
-          - MYSQL_ROOT_PASSWORD=secret
-          - TZ=America/Bogota
-        volumes:
-          - mysql-source-data:/var/lib/mysql
-        ports: 
-          - "33060:3306"
-  instastore-node:
-      build:
-          context: .
-          dockerfile: ./conf/docker/node.dockerfile
-      ports:
-        - "3000:3000"
-      links:
-        - instastore-db
-
+  asset-db:
+    build:
+      context: .
+      dockerfile: ./conf/docker/mysql.dockerfile
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: asset-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - TZ=America/Bogota
+    volumes:
+      - mysql-source-data:/var/lib/mysql
+    ports: 
+      - "33060:3306"
+  asset-api:
+    build:
+      context: .
+      dockerfile: node.dockerfile
+    image: nodejs
+    container_name: asset-api
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    command: ./init.sh
+networks: 
+  default: 
+    external: 
+      name: trakiot
 volumes:
   mysql-source-data:
+  node_modules:
