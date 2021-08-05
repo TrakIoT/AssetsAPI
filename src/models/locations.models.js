@@ -20,13 +20,13 @@ const getLocationById = (locationId) => {
   });
 };
 
-const saveLocation = (locationId, name, address, city, country) => {
+const saveLocation = ( name, address, city, country) => {
   return new Promise(function (resolve, reject) {
-    var query = "INSERT INTO Location (location_id, name, address, city, country, last_update) VALUES (?, ?, ?, ?, ?, NOW())";
+    var query = "INSERT INTO Location ( name, address, city, country, last_update) VALUES ( ?, ?, ?, ?, NOW())";
 
     database.query(
         query,
-        [locationId, name, address, city, country],
+        [ name, address, city, country],
         function (err, result, fields) {
             if(err) { 
                 reject(err);

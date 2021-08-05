@@ -12,12 +12,11 @@ const locationGetController = async (request, response, next) => {
 
 const locationPostController = async (request, response, next) => {
   const { name, address, city, country } = request.body;
-  const locationId = uuid.v4();
 
-  const result = await saveLocation( locationId, name, address, city, country);
+  const result = await saveLocation( name, address, city, country);
 
   if( result.affectedRows ){
-    response.status(200).json({location_id: locationId});
+    response.status(200).json({location_id: result.insertId});
   } else {
     response.status(500).json({message: "Error"});
   }

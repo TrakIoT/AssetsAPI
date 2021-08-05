@@ -60,13 +60,13 @@ const searchProductByName = (name) => {
   });
 };
 
-const saveProduct = (productId, name, totalQuantity) => {
+const saveProduct = ( name, totalQuantity) => {
   return new Promise(function (resolve, reject) {
-    var query = "INSERT INTO Product (product_id, name, total_quantity, last_update) VALUES (?, ?, ?, NOW())";
+    var query = "INSERT INTO Product ( name, total_quantity, last_update) VALUES ( ?, ?, NOW())";
 
     database.query(
         query,
-        [productId, name, totalQuantity],
+        [ name, totalQuantity],
         function (err, result, fields) {
             if(err) { 
                 reject(err);

@@ -1,6 +1,7 @@
 const express = require('express');
 const { productGetByIdController, productGetController, productSearchByNameController, productPostController } = require('../controllers/products.controller');
 const { locationGetController, locationPostController } = require('../controllers/locations.controller');
+const { registerPostController } = require('../controllers/registers.controller');
 
 const router = express.Router();
 
@@ -11,5 +12,7 @@ router.post('/product', productPostController);
 
 router.get('/location/:location_id', locationGetController);
 router.post('/location', locationPostController);
+
+router.post('/register', registerPostController);
 
 module.exports = router;
