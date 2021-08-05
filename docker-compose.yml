@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: ./conf/docker/mysql.dockerfile
     command: --default-authentication-plugin=mysql_native_password
+    container_name: asset-db
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - TZ=America/Bogota
@@ -12,33 +13,24 @@ services:
       - mysql-source-data:/var/lib/mysql
     ports: 
       - "33060:3306"
-    networks:
-      - asset-network
-  asset-node:
+  asset-api:
     build:
       context: .
       dockerfile: node.dockerfile
     image: nodejs
-    container_name: asset-node
+    container_name: asset-api
     restart: unless-stopped
     env_file: .env
-    # environment:
-    #   - MONGO_USERNAME=$MONGO_USERNAME
-    #   - MONGO_PASSWORD=$MONGO_PASSWORD
-    #   - MONGO_HOSTNAME=db
-    #   - MONGO_PORT=$MONGO_PORT
-    #   - MONGO_DB=$MONGO_DB
     ports:
       - "3000:3000"
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
-    networks:
-      - asset-network
     command: ./init.sh
-networks:
-  asset-network:
-    driver: bridge
+networks: 
+  default: 
+    external: 
+      name: trakiot
 volumes:
   mysql-source-data:
   node_modules:

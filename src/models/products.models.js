@@ -20,6 +20,46 @@ const getProductById = (productId) => {
   });
 };
 
+const getProducts = (limit, offset) => {
+  return new Promise(function (resolve, reject) {
+    var query = `SELECT * FROM Product ORDER BY last_update LIMIT ${limit} OFFSET ${offset}`;
+
+    database.query(
+        query,
+        [],
+        function (err, result, fields) {
+            if(err) { 
+                reject(err);
+
+                return;
+            }
+
+            resolve(result);
+        }
+    );
+  });
+}
+
+const searchProductByName = (name) => {
+  return new Promise(function (resolve, reject) {
+    var query = "SELECT * FROM Product WHERE LOWER(name) LIKE LOWER(?)";
+
+    database.query(
+        query,
+        [`%${name}%`],
+        function (err, result, fields) {
+            if(err) { 
+                reject(err);
+
+                return;
+            }
+
+            resolve(result);
+        }
+    );
+  });
+};
+
 const saveProduct = (productId, name, totalQuantity) => {
   return new Promise(function (resolve, reject) {
     var query = "INSERT INTO Product (product_id, name, total_quantity, last_update) VALUES (?, ?, ?, NOW())";
@@ -42,5 +82,7 @@ const saveProduct = (productId, name, totalQuantity) => {
 
 module.exports = {
   getProductById,
-  saveProduct
+  saveProduct,
+  searchProductByName,
+  getProducts
 }

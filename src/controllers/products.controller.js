@@ -1,10 +1,26 @@
 const uuid = require('uuid');
-const { getProductById, saveProduct } = require("../models/products.models");
+const { getProductById, searchProductByName, saveProduct, getProducts } = require("../models/products.models");
 
-const productGetController = async (request, response, next) => {
+const productGetByIdController = async (request, response, next) => {
   const { product_id: productId } = request.params;
 
   const result = await getProductById(productId);
+
+  response.status(200).json(result);
+};
+
+const productSearchByNameController = async (request, response, next) => {
+  const { name } = request.params;
+
+  const result = await searchProductByName(name);
+
+  response.status(200).json(result);
+};
+
+const productGetController = async (request, response, next) => {
+  const {limit, offset} = request.params;
+
+  const result = await getProducts(limit, offset);
 
   response.status(200).json(result);
 };
@@ -22,4 +38,4 @@ const productPostController = async (request, response, next) => {
   }
 };
 
-module.exports = { productGetController, productPostController };
+module.exports = { productGetByIdController, productGetController, productSearchByNameController, productPostController };
