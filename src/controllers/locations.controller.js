@@ -1,4 +1,3 @@
-const uuid = require('uuid');
 const { getLocationById, saveLocation } = require("../models/locations.models");
 
 const locationGetController = async (request, response, next) => {

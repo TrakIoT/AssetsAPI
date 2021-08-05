@@ -80,9 +80,30 @@ const saveProduct = ( name, totalQuantity) => {
   });
 };
 
+const updateProductQuantity = (productId, quantity) => {
+  return new Promise(function (resolve, reject) {
+    var query = "UPDATE Product SET total_quantity = ? WHERE product_id = ?";
+
+    database.query(
+        query,
+        [quantity, productId],
+        function (err, result, fields) {
+            if(err) { 
+                reject(err);
+
+                return;
+            }
+
+            resolve( result );
+        }
+    );
+  });
+}
+
 module.exports = {
   getProductById,
   saveProduct,
   searchProductByName,
-  getProducts
+  getProducts,
+  updateProductQuantity
 }

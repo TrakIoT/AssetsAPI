@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `assets`.`Batch` (
   `batch_id` INT NOT NULL AUTO_INCREMENT,
   `product_id` INT NOT NULL,
   `total_quantity` INT NULL,
-  `expiring_date` DATE NULL,
+  `expiring_date` DATETIME NULL,
   `last_update` DATETIME NULL,
   PRIMARY KEY (`batch_id`, `product_id`),
   CONSTRAINT `fk_Batch_Product1`
